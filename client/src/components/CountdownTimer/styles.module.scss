@@ -1,0 +1,16 @@
+@use '@styles/variables.module.scss' as v;
+.box {
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+.title {
+    color: v.$seconddary_color;
+    font-size: 18px;
+}
+
+.countDown {
+    margin-top: 150px;
+}

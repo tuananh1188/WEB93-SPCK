@@ -1,0 +1,18 @@
+@use '@styles/mixins.module.scss' as m;
+
+.container {
+    @include m.flex_box_custom(space-between, unset, 0px);
+    flex-direction: column;
+    padding: 30px 20px 0 20px;
+    height: 80vh;
+
+    .total {
+        @include m.flex_box_custom(space-between, center,0px);
+
+    }
+
+    .boxBtn {
+        @include m.flex_box_custom(center,center,10px);
+        flex-direction: column;
+    }
+}

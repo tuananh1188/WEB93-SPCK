@@ -1,0 +1,20 @@
+@use '@styles/variables.module.scss' as v;
+@use '@styles/mixins.module.scss' as m;
+.container {
+    @include m.flex_box_custom(center, center, 20px);
+    flex-direction: column;
+    background-color: v.$thir_color;
+    margin-top: 80px;
+    color: v.$white_color;
+    padding: 50px 0;
+}
+.boxNav {
+    @include m.flex_box_custom(center, center , 50px);
+    font-size: 15px;
+
+    :hover {
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+}

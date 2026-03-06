@@ -1,0 +1,54 @@
+@use '@styles/mixins.module.scss' as m;
+@use '@styles/variables.module.scss' as v;
+.container {
+    @include m.flex_box_custom(center, flex-start, 25px);
+    margin-top: 20px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    img {
+        width: 70px;
+    }
+
+    .boxClose {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        transform: translateX(30px);
+        transition: all 0.3s ease;
+    }
+
+    .boxContent {
+        @include m.flex_box_custom(center, flex-start, 0px);
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 16px;
+        color: v.$primary_color;
+    }
+
+    .size {
+        color: #9e9e9e;
+        margin-top: 7px;
+        margin-bottom: 10px;
+        font-size: 14px;
+
+    }
+
+    .price {
+        font-size: 14px;
+        color: v.$four_color;
+        margin-bottom: 7px;
+    }
+
+    &:hover {
+        background-color: #f7f7f7;
+        .boxClose {
+            transform: translateX(0);
+        }
+    }
+}

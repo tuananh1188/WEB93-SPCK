@@ -1,0 +1,26 @@
+@use '@styles/mixins.module.scss' as m;
+@use '@styles/variables.module.scss' as v;
+
+.container {
+    background-image: url('https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/photo-of-man-wearing-white-hoodie-5474310.jpeg');
+    height: 409px;
+    width: calc(100% / 2);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.containerTimer {
+    @include m.flex_box_custom(center, center, 10px);
+}
+
+.title {
+    color: v.$four_color;
+    font-size: 28px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.boxBtn {
+    margin-top: 20px;
+    width: 174px;
+}

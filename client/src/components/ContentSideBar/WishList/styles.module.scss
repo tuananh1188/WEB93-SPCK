@@ -1,0 +1,13 @@
+@use '@styles/mixins.module.scss' as m;
+
+.container {
+    @include m.flex_box_custom(space-between, unset, 0px);
+    padding: 30px 20px 0 20px;
+    height: 95%;
+    flex-direction: column;
+
+    .boxBtn {
+        @include m.flex_box_custom(space-between, unset, 10px);
+        flex-direction: column;
+    }
+}
