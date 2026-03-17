@@ -13,19 +13,17 @@ const userSchema = new mongoose.Schema(
             required: true
         },
         name: {
-            type: String,
-            required: true
+            type: String
         },
         phone: {
-            type: String,
-            required: true
+            type: String
         },
         role: {
             type: String,
             enum: ['customer', 'admin'],
             default: 'customer'
         },
-        address: { type: String, required: true }
+        address: { type: String }
     },
     { timestamps: true }
 );

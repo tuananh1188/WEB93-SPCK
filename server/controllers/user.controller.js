@@ -1,6 +1,7 @@
 import UserModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 export const userRegister = async (req, res) => {
     try {
@@ -66,7 +67,7 @@ export const userLogin = async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true, // Quan trong : Ngan chan JavaScript truy cap ( chong XSS)
             secure: false, // De false neu chay localhost, true neu dung HTTPS
-            samSite: 'strict', //Chong CSRF
+            sameSite: 'strict', //Chong CSRF
             path: '/', // Co hieu luc cho toan bo domain
             maxAge: 7 * 24 * 60 * 60 * 1000 // Khop voi expriresIn cua JWT ( 7 ngay)
         });
@@ -89,27 +90,52 @@ export const refreshToken = async (req, res) => {
                 message: 'You are not authenticated !'
             });
         }
-        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, decoded) => {
-            if (err)
-                return res
-                    .status(403)
-                    .send({ message: 'Token is not valid !' });
-            //Kiem tra token trong DB ( dam bao user chua logout)
-            const user = await UserModel.findById(decoded.id);
-            if (!user || user.refreshToken !== refreshToken) {
-                return res.status(403).send({
-                    message: 'Token invalid or revoked !'
+        jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_KEY,
+            async (err, decoded) => {
+                if (err)
+                    return res
+                        .status(403)
+                        .send({ message: 'Token is not valid !' });
+                //Kiem tra token trong DB ( dam bao user chua logout)
+                const user = await UserModel.findById(decoded.id);
+                if (!user || user.refreshToken !== refreshToken) {
+                    return res.status(403).send({
+                        message: 'Token invalid or revoked !'
+                    });
+                }
+                //Tao Access Token moi
+                const newAccessToken = jwt.sign(
+                    { id: user._id, role: user.role },
+                    process.env.JWT_ACCESS_KEY,
+                    { expiresIn: '15m' }
+                );
+                res.status(200).send({
+                    accessToken: newAccessToken
                 });
             }
-            //Tao Access Token moi
-            const newAccessToken = jwt.sign(
-                { id: user._id, role: user.role },
-                process.env.JWT_ACCESS_KEY,
-                { expiresIn: '15m' }
-            );
-            res.status(200).send({
-                accessToken: newAccessToken
-            });
+        );
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+};
+
+export const getInfo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res
+                .status(400)
+                .send({ message: 'Invalid User ID format! !' });
+        }
+        const user = await UserModel.findById(id).select('-password');
+        if (!user) {
+            return res.status(404).send({ message: 'User not found !' });
+        }
+        res.status(200).send({
+            message: 'Get user info successfully!',
+            data: user
         });
     } catch (error) {
         res.status(500).send({ message: error.message });
