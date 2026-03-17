@@ -1,4 +1,3 @@
-import slugify from 'slugify';
 import ProductModel from '../models/product.model.js';
 
 export const getAllProducts = async (req, res) => {
@@ -6,9 +5,9 @@ export const getAllProducts = async (req, res) => {
         //1. Lấy các tham só từ Query String
         const { page, limit, search, category, sort } = req.query;
         //2.Thiết lập giá trị mặc định nếu người dùng không truyền vào
-        page = parseInt(page) || 1;
-        limit = parseInt(limit) || 10;
-        const skip = (page - 1) * limit;
+        const pageNum = parseInt(page, 10) || 1;
+        const limitNum = parseInt(limit, 10) || 10;
+        const skip = (pageNum - 1) * limitNum;
         //3. Xây dựng bộ lọc (filter)
         let queryCondition = {};
         if (search) {
@@ -16,12 +15,12 @@ export const getAllProducts = async (req, res) => {
             queryCondition.name = { $regex: search, $options: 'i' };
         }
         if (category) {
-            queryCondition.category = categoty;
+            queryCondition.category = category;
         }
         //4. Thực thi truy vấn Database
         const listProducts = await ProductModel.find(queryCondition)
             .sort(sort ? sort : '-createdAt')
-            .limit(limit)
+            .limit(limitNum)
             .skip(skip);
         //5 Đếm tổng số sản phẩm để phía Frontend làm thanh phân trang
         const totalProducts = await ProductModel.countDocuments(queryCondition);
@@ -29,9 +28,9 @@ export const getAllProducts = async (req, res) => {
             message: 'Get list products successfully !',
             pagination: {
                 total: totalProducts,
-                page: page,
-                limit: limit,
-                totalPages: Math.ceil(totalProducts / limit)
+                page: pageNum,
+                limit: limitNum,
+                totalPages: Math.ceil(totalProducts / limitNum)
             },
             data: listProducts
         });
@@ -48,16 +47,13 @@ export const createProduct = async (req, res) => {
             name,
             category,
             price,
-            salePrice,
             stock,
             images,
             description,
             attributes
         } = req.body;
-        //1.Tự động tạo slug từ name
-        const slug = `${slugify(name, { lower: true })}-${Date.now()}`;
-        //2.Kiểm tra xem slug đã tồn tại chưa
-        const existingProduct = await ProductModel.findOne({ slug });
+        //2.Kiểm tra xem san pham đã tồn tại chưa
+        const existingProduct = await ProductModel.findOne({ name });
         if (existingProduct) {
             return res.status(400).send({
                 message: 'Product is exsited !'
@@ -66,10 +62,8 @@ export const createProduct = async (req, res) => {
         //3. Tao san pham moi
         const newProduct = new ProductModel({
             name,
-            slug,
             category,
             price,
-            salePrice,
             stock,
             images,
             description,

@@ -7,22 +7,14 @@ const productSchema = new mongoose.Schema(
             required: true,
             index: true
         },
-        slug: {
-            type: String,
-            required: true,
-            unique: true,
-            index: true
-        },
         category: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'categories',
+            type: String,
             required: true
         },
         price: {
             type: Number,
             required: true
         },
-        salePrice: { type: Number },
         stock: {
             type: Number,
             required: true,
@@ -54,8 +46,6 @@ const productSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-//compound index thuong dung, dang su dung ky thuat b-tree index
-productSchema.index({ slug: 1 });
-productSchema.index({ name: 'text', description: 'text' });
+
 const ProductModel = mongoose.model('products', productSchema);
 export default ProductModel;

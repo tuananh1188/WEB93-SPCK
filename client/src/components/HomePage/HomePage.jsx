@@ -12,18 +12,25 @@ import MyFooter from '../Footer/Footer';
 function HomePage() {
     const [listProducts, setListProducts] = useState([]);
     useEffect(() => {
-        getProducts().then((res) => {
-            setListProducts(res.contents);
-        });
+        getProducts()
+            .then((res) => {
+                setListProducts(res);
+            })
+            .catch((err) => {
+                console.error('error get data', err);
+            });
     }, []);
+
     return (
         <>
             <MyHeader />
             <Banner />
             <Info />
             <AdvanceHeadling />
-            <HeadingListProducts data={listProducts.slice(0, 2)} />
-            <PopularProduct data={listProducts.slice(2, listProducts.length)} />
+            <HeadingListProducts data={listProducts?.slice(0, 2)} />
+            <PopularProduct
+                data={listProducts?.slice(2, listProducts.length)}
+            />
             <SaleHomepage />
             <MyFooter />
         </>

@@ -1,11 +1,10 @@
-import { secretKey } from '..';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/user.model.js';
 export const verifyToken = async (req, res, next) => {
     try {
         //1 Lay token tu header "Authorizatio" (thuong co dang Bearer <token>)
         const authHeader = req.headers.authorization;
-        const token = authHeader && authHeader.split('')[1];
+        const token = authHeader?.split(' ')[1];
 
         if (!token) {
             return res.status(401).send({
@@ -13,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
             });
         }
         //2 Xac thuc token
-        const decoded = jwt.verify(token, secretKey);
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
         //3 Tim user tu database (de dam bao user van ton tai hoac chua bi xoa)
         const user = await UserModel.findById(decoded.id).select('-password');
         if (!user) {

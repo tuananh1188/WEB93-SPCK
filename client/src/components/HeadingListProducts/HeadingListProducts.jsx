@@ -10,7 +10,7 @@ function HeadingListProducts({ data }) {
             <div className={container}>
                 <CountdownBanner />
                 <div className={containerItem}>
-                    {data.map((item, index) => {
+                    {data?.map((item, index) => {
                         <ProductItem
                             key={index}
                             src={item.images[0]}

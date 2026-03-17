@@ -8,7 +8,7 @@ function PopularProduct({ data }) {
         <>
             <MainLayout>
                 <div className={container}>
-                    {data.map((item) => {
+                    {data?.map((item) => {
                         <ProductItem
                             key={item.id}
                             src={item.images[0]}

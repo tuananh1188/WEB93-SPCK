@@ -1,8 +1,6 @@
-
-
 export const userRegisterMiddleware = (req, res, next) => {
     try {
-        const { name, email, password, phone, addresses } = req.body;
+        const { name, email, password, phone, address } = req.body;
         if (!name) {
             return res.status(400).send({
                 message: 'name is required !'
@@ -23,7 +21,7 @@ export const userRegisterMiddleware = (req, res, next) => {
                 message: 'phone is required !'
             });
         }
-        if (!addresses) {
+        if (!address) {
             return res.status(400).send({
                 message: 'address is required !'
             });
