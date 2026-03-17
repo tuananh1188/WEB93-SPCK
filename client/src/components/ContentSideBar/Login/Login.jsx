@@ -7,12 +7,16 @@ import { useContext, useState } from 'react';
 import { ToastContext } from '../../../contexts/ToastProvider';
 import { register, signIn } from '../../../apis/authService';
 import Cookies from 'js-cookie';
+import { SideBarContext } from '../../../contexts/SideBarProvider';
+import { StoreContext } from '../../../contexts/storeProvider';
 
 function Login() {
     const { container, title, boxRememberMe, lostPw } = styles;
     const [isRegister, setIsRegister] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useContext(ToastContext);
+    const { setIsOpen } = useContext(SideBarContext);
+    const { setUserId } = useContext(StoreContext);
 
     const formik = useFormik({
         initialValues: {
@@ -33,10 +37,10 @@ function Login() {
         }),
         onSubmit: async (values) => {
             if (isLoading) return;
-            const { email: username, password } = values;
+            const { email, password } = values;
             setIsLoading(true);
             if (isRegister) {
-                await register({ username, password })
+                await register({ email, password })
                     .then((res) => {
                         toast.success(res.data.message);
                         setIsLoading(false);
@@ -47,14 +51,24 @@ function Login() {
                     });
             }
             if (!isRegister) {
-                await signIn({ username, password })
+                await signIn({ email, password })
                     .then((res) => {
                         setIsLoading(false);
-                        const { id, token, refreshToken } = res.data;
-                        Cookies.set('token', token);
-                        Cookies.set('refreshToken', refreshToken);
+                        const { accessToken, user } = res.data;
+                        setUserId(user._id);
+                        Cookies.set('token', accessToken);
+                        if (user?._id) {
+                            Cookies.set('userId', user._id);
+                        }
+                        toast.success('Login successfully !');
+                        setIsOpen(false);
                     })
-                    .catch((err) => {});
+                    .catch((err) => {
+                        setIsLoading(false);
+                        toast.error(
+                            err.response?.data?.message || 'Login failed'
+                        );
+                    });
             }
         }
     });
