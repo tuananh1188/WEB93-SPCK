@@ -74,7 +74,13 @@
     }
 }
 .containerProduct {
-    @include m.flex_box_custom(center, center, 10px);
+    @include m.flex_box_custom(center, center, 15px);
     flex-wrap: wrap;
-    margin-top: 40px;
+    margin-top: 15px;
 }
+.containerGrid {
+    @include m.flex_box_custom(flex-start,flex-start,20px);
+    flex-direction: column;
+    margin-top: 15px;
+}
+

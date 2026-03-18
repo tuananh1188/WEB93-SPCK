@@ -49,6 +49,7 @@ function Filter() {
                             color: '#222',
                             cursor: 'pointer'
                         }}
+                        onClick={() => handleGetShowGrid('list')}
                     />
                 </div>
             </div>

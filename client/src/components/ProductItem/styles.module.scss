@@ -3,7 +3,7 @@
 
 .boxImg {
     width: 300px;
-    height: 353px;
+    height: 100%;
     position: relative;
     cursor: pointer;
 
@@ -21,9 +21,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-
         transition: opacity 500ms;
-
         pointer-events: none;
     }
 
@@ -37,7 +35,9 @@
         bottom: 20px;
         right: 0px;
         background-color: white;
-        transition: opacity 500ms, right 300ms;
+        transition:
+            opacity 500ms,
+            right 300ms;
     }
 
     &:hover .showFncWhenHover {
@@ -71,4 +71,37 @@
     font-size: 14px;
     color: v.$thir_color;
     font-weight: 400;
+}
+.boxSize {
+    @include m.flex_box_custom(center, center, 10px);
+
+    .size {
+        @include m.flex_box_custom(center, center, 0px);
+        border: 1px solid #e1e1e1;
+        margin-top: 10px;
+        padding: 4px 6px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+}
+.textCenter {
+    text-align: center;
+}
+.boxBtn {
+    width: 142px;
+    margin: 10px auto;
+}
+.containerItem {
+    @include m.flex_box_custom(flex-start, center, 20px);
+
+    .content {
+        @include m.flex_box_custom(flex-start, flex-start, 10px);
+        flex-direction: column;
+    }
+    .leftBtn {
+        margin: 0px;
+    }
+    .largImg {
+        width: 380px;
+    }
 }

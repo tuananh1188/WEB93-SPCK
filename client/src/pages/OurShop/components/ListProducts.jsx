@@ -5,12 +5,13 @@ import ProductItem from '@components/ProductItem/ProductItem';
 import styles from '../styles.module.scss';
 
 function ListProducts() {
-    const { products } = useContext(OurShopContext);
-    const { containerProduct } = styles;
+    const { containerProduct,containerGrid } = styles;
+    const { products, isShowGrid } = useContext(OurShopContext);
+
     return (
         <>
             <MainLayout>
-                <div className={containerProduct}>
+                <div className={isShowGrid ? containerProduct : containerGrid}>
                     {products?.map((item) => (
                         <ProductItem
                             key={item._id}
@@ -18,6 +19,8 @@ function ListProducts() {
                             prevSrc={item.images[1]}
                             name={item.name}
                             price={item.price}
+                            details={item}
+                            isHomepage={false}
                         />
                     ))}
                 </div>
