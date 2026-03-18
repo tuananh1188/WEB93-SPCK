@@ -6,7 +6,7 @@ import {
     getAllProducts
 } from '../controllers/product.controller.js';
 const ProductRouter = Router();
-ProductRouter.get('', getAllProducts);
+ProductRouter.get('/', getAllProducts);
 ProductRouter.post(
     '/add',
     verifyToken,

@@ -18,8 +18,9 @@ export const getAllProducts = async (req, res) => {
             queryCondition.category = category;
         }
         //4. Thực thi truy vấn Database
+        const sortQuery = sort && sort !=='undefined'? sort : '-createdAt'
         const listProducts = await ProductModel.find(queryCondition)
-            .sort(sort ? sort : '-createdAt')
+            .sort(sortQuery)
             .limit(limitNum)
             .skip(skip);
         //5 Đếm tổng số sản phẩm để phía Frontend làm thanh phân trang
