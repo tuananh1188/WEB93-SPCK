@@ -10,15 +10,15 @@ function HeadingListProducts({ data }) {
             <div className={container}>
                 <CountdownBanner />
                 <div className={containerItem}>
-                    {data?.map((item, index) => {
+                    {data?.map((item, index) => (
                         <ProductItem
                             key={index}
                             src={item.images[0]}
-                            preSrc={item.images[1]}
+                            prevSrc={item.images[1]}
                             name={item.name}
                             price={item.price}
-                        />;
-                    })}
+                        />
+                    ))}
                 </div>
             </div>
         </MainLayout>

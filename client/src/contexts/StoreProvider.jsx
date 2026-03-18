@@ -13,11 +13,13 @@ export const StoreProvider = ({ children }) => {
         Cookies.remove('refreshToken');
         Cookies.remove('userId');
         setUserInfo(null);
+        setUserId(null);
         window.location.reload();
     };
 
     useEffect(() => {
-        if (userId) {
+        const token = Cookies.get('token');
+        if (userId && token && !userInfo) {
             getInfo(userId)
                 .then((res) => {
                     setUserInfo(res.data.data);
@@ -26,14 +28,10 @@ export const StoreProvider = ({ children }) => {
                     console.log(err);
                 });
         }
-    }, [userId]);
-    const contextValue = {
-        userInfo,
-        setUserInfo
-    };
+    }, [userId, userInfo]);
     return (
         <StoreContext.Provider
-            value={{ contextValue, handleLogOut, setUserId }}
+            value={{ userInfo, setUserInfo, handleLogOut, setUserId, userId }}
         >
             {children}
         </StoreContext.Provider>

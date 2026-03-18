@@ -9,7 +9,7 @@ const signIn = async (body) => {
 };
 
 const getInfo = async (id) => {
-    return await axiosClient.get(`/users/info/${id}`)
-}
+    return await axiosClient.get(`/users/info/${id}`);
+};
 
 export { register, signIn, getInfo };

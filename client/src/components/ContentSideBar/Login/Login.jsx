@@ -16,7 +16,7 @@ function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useContext(ToastContext);
     const { setIsOpen } = useContext(SideBarContext);
-    const { setUserId } = useContext(StoreContext);
+    const { setUserId, setUserInfo } = useContext(StoreContext);
 
     const formik = useFormik({
         initialValues: {
@@ -44,6 +44,7 @@ function Login() {
                     .then((res) => {
                         toast.success(res.data.message);
                         setIsLoading(false);
+                        handleToggle();
                     })
                     .catch((err) => {
                         toast.error(err.data.message);
@@ -56,6 +57,7 @@ function Login() {
                         setIsLoading(false);
                         const { accessToken, user } = res.data;
                         setUserId(user._id);
+                        setUserInfo(user);
                         Cookies.set('token', accessToken);
                         if (user?._id) {
                             Cookies.set('userId', user._id);
@@ -84,6 +86,7 @@ function Login() {
                     id='email'
                     label='Email'
                     type='text'
+                    autoComplete='email'
                     isRequired
                     formik={formik}
                 />
@@ -92,6 +95,7 @@ function Login() {
                     id='password'
                     label='Password'
                     type='password'
+                    autoComplete='current-password'
                     isRequired
                     formik={formik}
                 />
@@ -118,8 +122,7 @@ function Login() {
                               ? 'REGISTER'
                               : 'LOGIN'
                     }
-                    type='submit'
-                    //onClick={() => toast.success('success')}
+                    type='button'
                 />
             </form>
             <Button

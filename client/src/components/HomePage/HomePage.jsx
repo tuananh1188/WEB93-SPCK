@@ -12,7 +12,7 @@ import MyFooter from '../Footer/Footer';
 function HomePage() {
     const [listProducts, setListProducts] = useState([]);
     useEffect(() => {
-        getProducts()
+        getProducts({})
             .then((res) => {
                 setListProducts(res);
             })
