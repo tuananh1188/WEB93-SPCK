@@ -4,18 +4,18 @@ import Button from '@components/Button/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useContext, useState } from 'react';
-import { ToastContext } from '../../../contexts/ToastProvider';
-import { register, signIn } from '../../../apis/authService';
+import { ToastContext } from '@contexts/ToastProvider';
+import { register, signIn } from '@apis/authService';
 import Cookies from 'js-cookie';
-import { SideBarContext } from '../../../contexts/SideBarProvider';
-import { StoreContext } from '../../../contexts/storeProvider';
+import { SideBarContext } from '@contexts/SideBarProvider';
+import { StoreContext } from '@contexts/storeProvider';
 
 function Login() {
     const { container, title, boxRememberMe, lostPw } = styles;
     const [isRegister, setIsRegister] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useContext(ToastContext);
-    const { setIsOpen } = useContext(SideBarContext);
+    const { setIsOpen, handleGetListProductCart } = useContext(SideBarContext);
     const { setUserId, setUserInfo } = useContext(StoreContext);
 
     const formik = useFormik({
@@ -64,6 +64,7 @@ function Login() {
                         }
                         toast.success('Login successfully !');
                         setIsOpen(false);
+                        handleGetListProductCart(user._id, 'cart');
                     })
                     .catch((err) => {
                         setIsLoading(false);

@@ -2,33 +2,66 @@
 @use '@styles/variables.module.scss' as v;
 .container {
     @include m.flex_box_custom(center, flex-start, 25px);
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 10px;
+    padding: 15px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    border-bottom: 1px solid #f0f0f0;
 
-    img {
-        width: 70px;
+    .boxImg {
+        width: 80px;
+        height: 100px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f9f9f9;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     .boxClose {
         position: absolute;
-        top: 5px;
-        right: 5px;
+        top: 10px;
+        right: 10px;
         cursor: pointer;
-        transform: translateX(30px);
+        transform: translateX(40px);
         transition: all 0.3s ease;
+        z-index: 2;
     }
 
     .boxContent {
         @include m.flex_box_custom(center, flex-start, 0px);
+        flex: 1;
         flex-direction: column;
+        overflow: hidden;
+    }
+    .overLayLoading {
+        @include m.flex_box_custom(center, center, 0px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
     }
 
     .title {
-        font-size: 16px;
+        font-size: 15px;
+        font-weight: 500;
         color: v.$primary_color;
+        margin-bottom: 5px;
+        //Gioi han ten san pham toi da 2 dong
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .size {
@@ -36,7 +69,6 @@
         margin-top: 7px;
         margin-bottom: 10px;
         font-size: 14px;
-
     }
 
     .price {
@@ -49,6 +81,57 @@
         background-color: #f7f7f7;
         .boxClose {
             transform: translateX(0);
+        }
+    }
+}
+.confirmToast {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    p {
+        margin: 0;
+        font-size: 14px;
+        color: v.$primary_color;
+        b {
+            color: v.$four_color; // Màu nhấn mạnh cho tên sản phẩm
+        }
+    }
+
+    .boxBtnConfirm {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+
+        .btnCancel {
+            padding: 5px 12px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: transparent;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: #f0f0f0;
+            }
+        }
+
+        .btnDelete {
+            padding: 5px 12px;
+            cursor: pointer;
+            background-color: #ff4d4f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: #d9363e;
+                box-shadow: 0 2px 4px rgba(255, 77, 79, 0.2);
+            }
         }
     }
 }

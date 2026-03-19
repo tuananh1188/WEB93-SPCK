@@ -3,13 +3,13 @@ import { dataBoxIcon, dataMenu } from './constants';
 import Menu from './Menu/Menu';
 import styles from './styles.module.scss';
 import logo from '@images/Logo-retina.webp';
-import reloadIcon from '@icons/reloadIcon.svg';
-import heartIcon from '@icons/heartIcon.svg';
-import cartIcon from '@icons/cartIcon.svg';
 import useScrollHandling from '../../hooks/useScrollHandling';
 import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { SideBarContext } from '../../contexts/SideBarProvider';
+import { MdOutlineShoppingCart } from 'react-icons/md';
+import { FaRegHeart } from 'react-icons/fa';
+import { TfiReload } from 'react-icons/tfi';
 
 function MyHeader() {
     const {
@@ -19,13 +19,14 @@ function MyHeader() {
         containerBox,
         container,
         fixedHeader,
-        topHeader
+        topHeader,
+        boxCart,
+        quantity
     } = styles;
 
     const { scrollPosition } = useScrollHandling();
     const [fixePosition, setFixedPosition] = useState(false);
-
-    const { setIsOpen, setType } = useContext(SideBarContext);
+    const { setIsOpen, setType, listProductCart } = useContext(SideBarContext);
 
     const handleOpenSideBar = (type) => {
         setIsOpen(true);
@@ -85,24 +86,23 @@ function MyHeader() {
                             })}
                     </div>
                     <div className={containerBoxIcon}>
-                        <img
-                            src={reloadIcon}
-                            alt='reloadIcon'
-                            width={26}
+                        <TfiReload
+                            style={{ fontSize: '25px' }}
                             onClick={() => handleOpenSideBar('compare')}
                         />
-                        <img
-                            src={heartIcon}
-                            alt='heartIcon'
-                            width={26}
+                        <FaRegHeart
+                            style={{ fontSize: '25px' }}
                             onClick={() => handleOpenSideBar('wishlist')}
                         />
-                        <img
-                            src={cartIcon}
-                            alt='cartIcon'
-                            width={26}
-                            onClick={() => handleOpenSideBar('cart')}
-                        />
+                        <div className={boxCart}>
+                            <MdOutlineShoppingCart
+                                style={{ fontSize: '25px' }}
+                                onClick={() => handleOpenSideBar('cart')}
+                            />
+                            <div className={quantity}>
+                                {listProductCart.length}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

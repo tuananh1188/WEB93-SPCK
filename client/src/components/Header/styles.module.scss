@@ -34,7 +34,6 @@
     &:hover {
         cursor: pointer;
     }
-
 }
 
 .containerBox {
@@ -66,9 +65,9 @@
     width: 150px;
     padding: 10px;
     top: 40px;
-    left:0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    z-index:10;
+    left: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 
     &::before {
         content: '';
@@ -76,7 +75,7 @@
         width: 100%;
         height: 20px;
         position: absolute;
-        top:-20px;
+        top: -20px;
         left: 0;
         background-color: transparent;
     }
@@ -91,11 +90,30 @@
     transform-origin: right;
     transform: scale(0);
     opacity: 0;
-    transition: transform 300ms, opacity 500ms;
+    transition:
+        transform 300ms,
+        opacity 500ms;
     margin-top: 5px;
 }
 
 .menu:hover::after {
     transform: scale(1);
     opacity: 1;
+}
+
+.boxCart {
+    position: relative;
+
+    .quantity {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: v.$primary_color;
+        font-size: 10px;
+        color: #fff;
+        @include m.radius_common(50%);
+        width: 15px;
+        height: 15px;
+        @include m.flex_box_custom(center, center, 0px);
+    }
 }
