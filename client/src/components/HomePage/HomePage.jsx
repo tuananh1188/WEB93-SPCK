@@ -14,7 +14,7 @@ function HomePage() {
     useEffect(() => {
         getProducts({})
             .then((res) => {
-                setListProducts(res);
+                setListProducts(res.data);
             })
             .catch((err) => {
                 console.error('error get data', err);

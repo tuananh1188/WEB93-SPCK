@@ -122,7 +122,7 @@ function Login() {
                               ? 'REGISTER'
                               : 'LOGIN'
                     }
-                    type='button'
+                    type='submit'
                 />
             </form>
             <Button

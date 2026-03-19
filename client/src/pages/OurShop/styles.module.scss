@@ -74,13 +74,26 @@
     }
 }
 .containerProduct {
-    @include m.flex_box_custom(center, center, 15px);
+    @include m.flex_box_custom(space-between, flex-start, 15px);
     flex-wrap: wrap;
     margin-top: 15px;
 }
 .containerGrid {
-    @include m.flex_box_custom(flex-start,flex-start,20px);
+    @include m.flex_box_custom(flex-start, flex-start, 20px);
     flex-direction: column;
     margin-top: 15px;
 }
-
+.sectionListProduct {
+    min-height: 800px;
+}
+.rotate {
+    animation: loading 1s linear infinite;
+    @keyframes loading {
+        0% {
+            transform: rotate(0);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

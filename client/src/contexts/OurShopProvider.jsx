@@ -23,6 +23,54 @@ export const OurShopProvider = ({ children }) => {
     const [showId, setShowId] = useState('8');
     const [isShowGrid, setIsShowGrid] = useState(true);
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+
+    const fetchProducts = (isLoadMore = false) => {
+        const targetPage = isLoadMore ? page + 1 : 1;
+
+        const query = {
+            sortId: sortId,
+            page: targetPage,
+            limit: showId
+        };
+        if (!isLoadMore) setIsLoading(true);
+        getProducts(query)
+            .then((res) => {
+                if (isLoadMore) {
+                    setProducts((prev) => {
+                        const existingIds = new Set(
+                            prev.map((item) => item._id)
+                        );
+                        const newItems = res.data.filter(
+                            (item) => !existingIds.has(item._id)
+                        );
+                        return [...prev, ...newItems];
+                    });
+                } else {
+                    setProducts(res.data);
+                }
+
+                setPage(res.pagination.page);
+                setTotal(res.pagination.total);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setIsLoading(false);
+            });
+    };
+
+    const handleLoadMore = () => {
+        fetchProducts(true);
+    };
+
+    useEffect(() => {
+        fetchProducts(false);
+    }, [sortId, showId]);
+
+    const isShowAll = showId === 'all';
 
     const values = {
         sortOptions,
@@ -31,22 +79,13 @@ export const OurShopProvider = ({ children }) => {
         setShowId,
         setIsShowGrid,
         products,
-        isShowGrid
+        isShowGrid,
+        isLoading,
+        handleLoadMore,
+        total,
+        page,
+        isShowAll
     };
-
-    useEffect(() => {
-        const query = {
-            sortId: sortId,
-            page: 1,
-            limit: showId
-        };
-
-        getProducts(query)
-            .then((res) => {
-                setProducts(res);
-            })
-            .catch((err) => {});
-    }, [sortId, showId]);
 
     return (
         <OurShopContext.Provider value={values}>

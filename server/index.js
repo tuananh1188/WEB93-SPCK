@@ -5,6 +5,7 @@ import UserRouter from './routes/user.routes.js';
 import ProductRouter from './routes/product.routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import CartRouter from './routes/cart.routes.js';
 
 //1.Cau hinh moi truong
 dotenv.config();
@@ -34,6 +35,7 @@ app.get('', (req, res) => {
 
 app.use('/users', UserRouter);
 app.use('/products', ProductRouter);
+app.use('/carts',CartRouter);
 
 app.listen(port, () => {
     console.log(`Server is running at ${port}`);

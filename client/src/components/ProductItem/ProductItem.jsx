@@ -4,9 +4,11 @@ import heartIcon from '@icons/heartIcon.svg';
 import cartIcon from '@icons/cartIcon.svg';
 import cls from 'classnames';
 import Button from '../Button/Button';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { OurShopContext } from '@contexts/OurShopProvider';
-
+import Cookies from 'js-cookie';
+import { SideBarContext } from '@contexts/SideBarProvider';
+import { ToastContext } from '../../contexts/ToastProvider';
 function ProductItem({
     src,
     prevSrc,
@@ -15,7 +17,12 @@ function ProductItem({
     details,
     isHomepage = true
 }) {
-    const { isShowGrid } = useContext(OurShopContext);
+    const [sizeChoose, setSizeChoose] = useState('');
+    const ourShopStore = useContext(OurShopContext);
+    const [isShowGrid, setIsShowGrid] = useState(ourShopStore?.isShowGrid);
+    const userId = Cookies.get('userId');
+    const { setIsOpen, setType } = useContext(SideBarContext);
+    const { toast } = useContext(ToastContext);
     const {
         boxImg,
         showImgWhenHover,
@@ -30,8 +37,41 @@ function ProductItem({
         content,
         containerItem,
         leftBtn,
-        largImg
+        largImg,
+        isActiveSize,
+        btnClear
     } = styles;
+
+    const handleChooseSize = (size) => {
+        setSizeChoose(size);
+    };
+
+    const handleClearSize = () => {
+        setSizeChoose('');
+    };
+
+    const handleAddToCard = () => {
+        console.log(userId);
+        if (!userId) {
+            setIsOpen(true);
+            setType('login');
+            toast.warning('Please login to add product to cart !');
+            return;
+        }
+        if (!sizeChoose) {
+            toast.warning('Please choose size !');
+            return;
+        }
+    };
+
+    useEffect(() => {
+        if (isHomepage) {
+            setIsShowGrid(true);
+        } else {
+            setIsShowGrid(ourShopStore?.isShowGrid);
+        }
+    }, [isHomepage, ourShopStore?.isShowGrid]);
+
     return (
         <div className={isShowGrid ? '' : containerItem}>
             <div className={cls(boxImg, { [largImg]: !isShowGrid })}>
@@ -57,14 +97,24 @@ function ProductItem({
                     <div className={boxSize}>
                         {details.attributes.size.map((item, index) => {
                             return (
-                                <div key={index} className={size}>
+                                <div
+                                    key={index}
+                                    className={cls(size, {
+                                        [isActiveSize]: sizeChoose === item.name
+                                    })}
+                                    onClick={() => handleChooseSize(item.name)}
+                                >
                                     {item.name}
                                 </div>
                             );
                         })}
                     </div>
                 )}
-
+                {sizeChoose && (
+                    <div className={btnClear} onClick={() => handleClearSize()}>
+                        Clear
+                    </div>
+                )}
                 <div
                     className={cls(title, {
                         [textCenter]: !isHomepage
@@ -82,7 +132,10 @@ function ProductItem({
                 </div>
                 {!isHomepage && (
                     <div className={cls(boxBtn, { [leftBtn]: !isShowGrid })}>
-                        <Button content='ADD TO CART' />
+                        <Button
+                            content='ADD TO CART'
+                            onClick={handleAddToCard}
+                        />
                     </div>
                 )}
             </div>

@@ -19,6 +19,12 @@ function Menu({ content, href }) {
             navigate('/shop');
         }
     };
+
+    const handleClickLogOut = () => {
+        handleLogOut();
+        setIsShowSubMenu(false);
+    };
+
     const handleRenderText = (content) => {
         if (content === 'Sign in' && userInfo) {
             return `Hello: ${userInfo?.email}`;
@@ -38,12 +44,14 @@ function Menu({ content, href }) {
             className={menu}
             onClick={handleClickShowLogin}
             onMouseEnter={handleHover}
+            onMouseLeave={() => setIsShowSubMenu(false)}
         >
             {handleRenderText(content)}
             {isShowSubMenu && (
                 <div
                     onMouseLeave={() => setIsShowSubMenu(false)}
                     className={subMenu}
+                    onClick={handleClickLogOut}
                 >
                     LOG OUT
                 </div>

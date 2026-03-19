@@ -19,7 +19,7 @@ const getProducts = async (query) => {
                 limit: limit === 'all' ? 100 : limit
             }
         });
-        return res.data.data;
+        return res.data;
     } catch (error) {
         console.error(
             'Chi tiết lỗi Axios:',
